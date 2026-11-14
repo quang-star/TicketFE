@@ -3,7 +3,7 @@
         <div class="container mx-auto flex items-center justify-between p-3">
             <div class="flex items-center space-x-2 justify-content-center">
                 <router-link to="/">
-                    <span class="font-bold text-3xl cursor-pointer">ticketbox</span>
+                    <span class="font-bold text-3xl cursor-pointer">ticket</span>
                 </router-link>
             </div>
 

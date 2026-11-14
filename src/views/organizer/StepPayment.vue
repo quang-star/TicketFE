@@ -3,11 +3,11 @@
 
     <h2 class="text-xl font-semibold text-white">Thông tin thanh toán</h2>
     <p class="text-gray-300 text-sm">
-      Ticketbox sẽ chuyển tiền bán vé đến tài khoản của bạn.
+      Ticket sẽ chuyển tiền bán vé đến tài khoản của bạn.
     </p>
     <p class="text-gray-300 text-sm">
       Tiền bán vé (sau khi trừ phí dịch vụ) sẽ vào tài khoản của bạn sau khi xác nhận sale report từ 7 - 10 ngày.
-      Nếu bạn muốn nhận tiền sớm hơn, vui lòng liên hệ 1900.6408 hoặc info@ticketbox.vn
+      Nếu bạn muốn nhận tiền sớm hơn, vui lòng liên hệ 1900.6408 hoặc info@ticket.quanglab.site
     </p>
 
     <div class="space-y-4">
