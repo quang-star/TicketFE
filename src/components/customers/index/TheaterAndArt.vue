@@ -54,7 +54,7 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import axios from 'axios';
+import api from '@/config/api';
 import { useRouter } from 'vue-router'  
 
 const router = useRouter()
@@ -75,7 +75,7 @@ const formatDate = (dateString) => {
 
 const getArtEvents = async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/art-events-index');
+    const res = await api.get('/art-events-index');
 
     console.log('res', res);
     console.log('res.data', res.data);

@@ -71,7 +71,7 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import { useRouter } from 'vue-router'  
 
 const router = useRouter()
@@ -93,7 +93,7 @@ const formatDate = (dateString) => {
 
 const getMusicEvents = async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/music-events-index');
+    const res = await api.get('/music-events-index');
 
     if (res.data.code === 200) {
       state.musics = res.data.data;

@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import { useRouter } from 'vue-router'
 
 // Import Components
@@ -71,7 +71,7 @@ const onSearch = async (keyword) => {
     // ... logic search cũ của bạn
     try {
         isSearching.value = true
-        const res = await axios.get('http://127.0.0.1:8000/api/search', { params: { q: keyword } })
+        const res = await api.get('/search', { params: { q: keyword } })
         searchResults.value = res.data.data ?? []
     } catch (err) {
         console.error(err)
@@ -92,7 +92,7 @@ const fetchCategories = async () => {
     try {
         // Gọi API lấy tất cả danh mục
         // Đảm bảo Laravel có route: Route::get('/categories', ...)
-        const response = await axios.get('http://127.0.0.1:8000/api/categories');
+        const response = await api.get('/categories');
 
         if (response.data && response.data.code === 200) {
             state.categories = response.data.data;

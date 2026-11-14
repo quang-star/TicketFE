@@ -305,7 +305,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
 
@@ -345,9 +345,7 @@ const selectedOrderDetail = ref(null)
 const fetchOrders = async () => {
   try {
     isLoading.value = true
-    const response = await axios.get('http://localhost:8000/api/my-orders', {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem('access_token')}` }
-    })
+    const response = await api.get('/my-orders')
     
     if (response.data && response.data.data) {
         orders.value = response.data.data
@@ -412,9 +410,7 @@ const openOrderDetail = async (orderId) => {
     selectedOrderDetail.value = null
 
     try {
-        const response = await axios.get(`http://localhost:8000/api/orders/${orderId}`, {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem('access_token')}` }
-        })
+        const response = await api.get(`/orders/${orderId}`)
         
         if(response.data && response.data.data) {
             selectedOrderDetail.value = response.data.data
@@ -457,13 +453,11 @@ const submitReview = async () => {
     try {
         isSubmittingReview.value = true
         
-        const response = await axios.post('http://localhost:8000/api/reviews', {
+        const response = await api.post('/reviews', {
             order_id: selectedOrderId.value,
             event_id: selectedEventId.value,
             rating: rating.value,
             comment: comment.value
-        }, {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem('access_token')}` }
         })
 
         // Kiểm tra kết quả trả về từ Backend

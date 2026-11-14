@@ -121,7 +121,7 @@
 
 <script setup>
 import { reactive, watch, ref } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import Swal from "sweetalert2"; 
 // import { BASE_URL } from "@/config/const"; 
 
@@ -191,13 +191,11 @@ const submitReport = async () => {
     try {
         isSubmitting.value = true;
         
-        const response = await axios.post('http://localhost:8000/api/reports', {
+        const response = await api.post('/reports', {
             type: 'event', 
             id: props.event.id, 
             reason: reportForm.reason,
             description: reportForm.description
-        }, {
-            headers: { Authorization: `Bearer ${token}` }
         });
 
         showReport.value = false;

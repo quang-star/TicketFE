@@ -16,14 +16,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import api from '@/config/api';
 
 const categories = ref([]);
 
 const fetchCategories = async () => {
   try {
     // Gọi API lấy danh sách category từ Laravel
-    const response = await axios.get('http://127.0.0.1:8000/api/categories');
+    const response = await api.get('/categories');
     if (response.data.code === 200) {
       categories.value = response.data.data;
     }
