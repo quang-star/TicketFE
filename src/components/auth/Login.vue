@@ -61,7 +61,7 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { googleTokenLogin } from "vue3-google-login";
 import { useRouter, useRoute } from "vue-router";
 import { useCartStore } from "@/stores/cart";
@@ -108,7 +108,7 @@ const handleLogin = async () => {
         return;
     }
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/login", {
+        const res = await api.post("/login", {
             email: email.value,
             password: password.value
         });
@@ -127,7 +127,7 @@ const handleLogin = async () => {
 const loginWithGoogle = async () => {
     try {
         const googleUser = await googleTokenLogin();
-        const res = await axios.post("http://127.0.0.1:8000/api/loginwithgoogle", {
+        const res = await api.post("/loginwithgoogle", {
             access_token: googleUser.access_token
         });
 

@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { googleTokenLogin } from 'vue3-google-login'
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
@@ -62,7 +62,7 @@ const handleLogin = async () => {
     return;
   }
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/login", {
+    const res = await api.post("/login", {
       'email': email.value,
       'password': password.value
     });
@@ -73,7 +73,7 @@ const handleLogin = async () => {
       close();
       let user_info = JSON.parse(sessionStorage.getItem('user_info'))
       if(user_info.role == 3){ // 3 là admin
-        window.location.href = '/admin/index';
+        window.location.href = '/admin/dashboard';
       }else {
         window.location.reload();
       }
@@ -89,7 +89,7 @@ const handleLogin = async () => {
 const loginWithGoogle = async () => {
   try {
     const googleUser = await googleTokenLogin();
-    const res = await axios.post("http://127.0.0.1:8000/api/loginwithgoogle", {
+    const res = await api.post("/loginwithgoogle", {
       'access_token': googleUser.access_token,
     });
     if (res.data.code === 200) {
@@ -99,7 +99,7 @@ const loginWithGoogle = async () => {
       close();
       let user_info = JSON.parse(sessionStorage.getItem('user_info'))
       if(user_info.role == 3){ // 3 là admin
-        window.location.href = '/admin/index';
+        window.location.href = '/admin/dashboard';
       }else {
         window.location.reload();
       }

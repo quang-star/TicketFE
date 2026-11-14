@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { useRouter } from "vue-router";
 import HeaderComponent from '@/components/customers/layouts/HeaderComponent.vue';
 
@@ -93,7 +93,7 @@ const handleSendCode = async () => {
     if (!email.value) return;
     loading.value = true;
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/forgot-password", { email: email.value });
+        const res = await api.post("/forgot-password", { email: email.value });
         
         if (res.data.code === 200) {
             alert("Mã xác nhận đã được gửi! Vui lòng kiểm tra email.");
@@ -122,7 +122,7 @@ const handleResetPassword = async () => {
 
     loading.value = true;
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/reset-password", {
+        const res = await api.post("/reset-password", {
             email: email.value,
             code: code.value,
             password: newPassword.value

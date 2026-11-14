@@ -28,7 +28,7 @@
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import api from "@/config/api";
 import { googleTokenLogin } from 'vue3-google-login';
 
 const auth = useAuthStore();
@@ -42,7 +42,7 @@ const handleLogin = async () => {
     if (!email.value || !password.value) return alert("Điền đầy đủ thông tin");
 
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/login", {
+        const res = await api.post("/login", {
             email: email.value,
             password: password.value
         });
@@ -72,7 +72,7 @@ const handleLogin = async () => {
 const loginWithGoogle = async () => {
     try {
         const googleUser = await googleTokenLogin();
-        const res = await axios.post("http://127.0.0.1:8000/api/loginwithgoogle", {
+        const res = await api.post("/loginwithgoogle", {
             access_token: googleUser.access_token
         });
 

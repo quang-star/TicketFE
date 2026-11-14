@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 
 const props = defineProps({
   modelValue: Boolean
@@ -65,7 +65,7 @@ const handleConfirm = async () => {
   }
 
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/verifyAccount", {
+    const res = await api.post("/verifyAccount", {
       'email': email.value,
       'code': code.value,
     });
@@ -83,7 +83,7 @@ const handleConfirm = async () => {
 
 const resendCode = async () => {
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/resend-code", {
+    const res = await api.post("/resend-code", {
       email: email.value,
     });
     alert(res.data.message || "Mã mới đã được gửi!");
