@@ -135,7 +135,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import api from '@/config/api';
 import Swal from 'sweetalert2';
 
 const reports = ref([]);
@@ -155,10 +155,8 @@ const formatDate = d => new Date(d).toLocaleDateString('vi-VN',{day:'2-digit',mo
 const fetchReports = async (page=1)=>{
   loading.value = true;
   try{
-    const token = sessionStorage.getItem('access_token');
-    const res = await axios.get('http://localhost:8000/api/admin/reports',{
-      params:{status:currentStatus.value,page},
-      headers:{Authorization:`Bearer ${token}`}
+    const res = await api.get('/admin/reports', {
+      params: { status: currentStatus.value, page }
     });
     if(res.data.code===200){
       reports.value=res.data.data.data;
@@ -174,11 +172,7 @@ const fetchReports = async (page=1)=>{
 
 const updateStatus = async (id,status)=>{
   try{
-    const token=sessionStorage.getItem('access_token');
-    await axios.post(`http://localhost:8000/api/admin/reports/${id}/status`,
-      {status},
-      {headers:{Authorization:`Bearer ${token}`}}
-    );
+    await api.post(`/admin/reports/${id}/status`, { status });
     Swal.fire({
       icon: status==='resolved'?'success':'info',
       title: status==='resolved'?'Đã xác nhận vi phạm':'Đã bỏ qua báo cáo',

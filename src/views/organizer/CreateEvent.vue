@@ -21,7 +21,7 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
+import api from "@/config/api";
 
 import OrganizerSidebar from "@/components/organizers/OrganizerSidebar.vue";
 import OrganizerHeader from "@/components/organizers/OrganizerHeader.vue";
@@ -190,15 +190,20 @@ async function submitAll() {
     // -------------------------
     // 4) Gửi POST
     // -------------------------
-    const res = await axios.post(
-      "http://127.0.0.1:8000/api/create-event",
+    const res = await api.post(
+      "/create-event",
       form,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
 
-    console.log("📥 RESPONSE:", res.data);
+    if (res.data?.code === 200 || res.status === 200) {
+      alert(res.data?.message || "Tạo sự kiện thành công!");
+    } else {
+      alert(res.data?.message || "Tạo sự kiện thất bại!");
+    }
   } catch (err) {
     console.error("❌ API ERROR:", err);
+    alert(err?.response?.data?.message || "Tạo sự kiện thất bại!");
   }
 }
 

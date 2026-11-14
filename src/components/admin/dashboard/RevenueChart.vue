@@ -48,7 +48,7 @@
 
 <script setup>
 import { ref, onMounted, reactive, computed } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 
@@ -137,15 +137,14 @@ const fetchData = async () => {
         const token = sessionStorage.getItem('access_token');
         
         // [QUAN TRỌNG] Gọi đúng API dashboard-revenue
-        const res = await axios.get('http://localhost:8000/api/admin/dashboard-revenue', {
+        const res = await api.get('/admin/dashboard-revenue', {
             params: {
                 filter_type: filter.type,
                 start_date: filter.start_date,
                 end_date: filter.end_date,
                 start_month: filter.start_month,
                 end_month: filter.end_month
-            },
-            headers: { Authorization: `Bearer ${token}` }
+            }
         });
 
         if(res.data.code === 200) {

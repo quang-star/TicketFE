@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 
 const stats = ref({
     events: 0,
@@ -47,7 +47,7 @@ const stats = ref({
 
 async function fetchStats() {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/admin/dashboard-stats')
+        const res = await api.get('/admin/dashboard-stats')
         stats.value = res.data
     } catch (err) {
         console.error("Lỗi lấy thống kê:", err)

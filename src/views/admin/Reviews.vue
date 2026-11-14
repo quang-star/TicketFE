@@ -190,7 +190,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import Swal from "sweetalert2";
 
 const reviews = ref([]);
@@ -220,10 +220,8 @@ const formatDate = (d) =>
 const fetchReviews = async (page = 1) => {
   loading.value = true;
   try {
-    const token = sessionStorage.getItem("access_token");
-    const res = await axios.get("http://localhost:8000/api/admin/reviews", {
+    const res = await api.get("/admin/reviews", {
       params: { status: currentStatus.value, keyword: keyword.value, page },
-      headers: { Authorization: `Bearer ${token}` },
     });
     if (res.data.code === 200) {
       reviews.value = res.data.data.data;
@@ -238,12 +236,7 @@ const fetchReviews = async (page = 1) => {
 
 const updateStatus = async (id, status) => {
   try {
-    const token = sessionStorage.getItem("access_token");
-    await axios.post(
-      `http://localhost:8000/api/admin/reviews/${id}/status`,
-      { status },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    await api.post(`/admin/reviews/${id}/status`, { status });
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
