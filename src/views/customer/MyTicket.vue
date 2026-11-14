@@ -80,11 +80,11 @@
               <circle cx="130" cy="130" r="130" fill="#F59D5D" />
             </svg>
             <p class="text-gray-500 mb-4">Bạn chưa có vé nào</p>
-            <a href="/">
+            <router-link to="/">
               <button class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                 Mua vé ngay
               </button>
-            </a>
+            </router-link>
           </div>
         </div>
       </main>

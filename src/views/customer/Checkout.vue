@@ -45,9 +45,9 @@
             </div>
 
             <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6">
-              <a href="/cart" class="text-green-700 font-semibold mr-35 hover:underline text-lg">
+              <router-link to="/cart" class="text-green-700 font-semibold mr-35 hover:underline text-lg">
                 ← Trở về giỏ hàng
-              </a>
+              </router-link>
 
               <button @click="placeOrder" class="px-10 py-4 bg-gradient-to-r from-green-500 to-green-600 
                       hover:from-green-600 hover:to-green-700 text-white rounded-xl 

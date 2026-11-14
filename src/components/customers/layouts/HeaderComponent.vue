@@ -31,7 +31,7 @@
                     </button>
                 </div>
 
-                <a href="my-order" class="hover:underline">Vé của tôi</a>
+                <router-link to="/my-order" class="hover:underline">Vé của tôi</router-link>
 
                 <div v-if="state.user_info" class="relative group">
                     <button class="flex items-center space-x-2 focus:outline-none">
