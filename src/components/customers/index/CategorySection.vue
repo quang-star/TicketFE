@@ -51,7 +51,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import { useRouter } from 'vue-router'
 
 // Nhận ID và Tên danh mục từ Component Cha
@@ -96,7 +96,7 @@ const getEventsByCategory = async () => {
     try {
         const today = getTodayDate();
 
-        const res = await axios.get('http://127.0.0.1:8000/api/search', {
+        const res = await api.get('/search', {
             params: {
                 cate: props.categoryId,
                 limit: 10, // Lấy dư ra một chút để FE lọc lại cho chuẩn

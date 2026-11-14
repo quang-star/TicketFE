@@ -65,7 +65,6 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
 import Swal from 'sweetalert2'
 
 // Props từ parent

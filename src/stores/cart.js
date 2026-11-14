@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 
 export const useCartStore = defineStore('cart', () => {
     // ================== STATE ==================
@@ -52,13 +52,12 @@ export const useCartStore = defineStore('cart', () => {
         const ticketId = (typeof ticketOrId === 'object') ? ticketOrId.id : ticketOrId;
 
         try {
-            const res = await axios.post(
-                'http://127.0.0.1:8000/api/add-to-cart',
+            const res = await api.post(
+                '/add-to-cart',
                 {
                     ticket_id: ticketId,
                     quantity: quantity
-                },
-                { headers: { Authorization: 'Bearer ' + access_token.value } }
+                }
             )
 
             if (res.data.code === 200) {
@@ -79,10 +78,7 @@ export const useCartStore = defineStore('cart', () => {
 
     async function init() {
         try {
-            const res = await axios.get(
-                'http://127.0.0.1:8000/api/get-cart',
-                { headers: { Authorization: 'Bearer ' + access_token.value } }
-            )
+            const res = await api.get('/get-cart')
 
             if (res.data.code === 200) {
                 items.value = res.data.data || []
@@ -97,10 +93,9 @@ export const useCartStore = defineStore('cart', () => {
     async function removeFromCart(ticket_type_id) {
         updateAuth();
         try {
-            const res = await axios.post(
-                'http://127.0.0.1:8000/api/remove-from-cart',
-                { ticket_id: ticket_type_id },
-                { headers: { Authorization: 'Bearer ' + access_token.value } }
+            const res = await api.post(
+                '/remove-from-cart',
+                { ticket_id: ticket_type_id }
             );
 
             if (res.data.code === 200) {
@@ -156,13 +151,12 @@ export const useCartStore = defineStore('cart', () => {
 
         try {
             // 1️⃣ Add to cart (backend) – KHÔNG clear cart
-            const res = await axios.post(
-                'http://127.0.0.1:8000/api/add-to-cart',
+            const res = await api.post(
+                '/add-to-cart',
                 {
                     ticket_id: ticketId,
                     quantity: quantity
-                },
-                { headers: { Authorization: 'Bearer ' + access_token.value } }
+                }
             )
 
             if (res.data.code === 200) {

@@ -114,7 +114,7 @@
 <script setup>
 import HeaderComponent from "@/components/customers/layouts/HeaderComponent.vue";
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 
 const user_info = ref(JSON.parse(sessionStorage.getItem('user_info') || '{}'));
 const access_token = ref(sessionStorage.getItem('access_token'));
@@ -126,9 +126,9 @@ const avatarFile = ref(null);
 const avatarPreview = ref(null);
 
 const form = ref({
-  name: "Nhất Khánh",
+  name: "",
   phone: "",
-  email: "nguyenduykhanh121204@gmail.com",
+  email: "",
 });
 
 const passForm = ref({
@@ -173,12 +173,11 @@ async function updateProfile() {
       formData.append('avatar', avatarFile.value);
     }
 
-    const response = await axios.post(
-      "http://localhost:8000/api/update-profile",
+    const response = await api.post(
+      "/update-profile",
       formData,
       {
         headers: {
-          Authorization: `Bearer ${access_token.value}`,
           'Content-Type': 'multipart/form-data' // Bắt buộc khi gửi file
         },
       }
@@ -216,15 +215,12 @@ async function changePassword() {
   }
 
   try {
-    const response = await axios.post(
-      "http://localhost:8000/api/change-password",
+    const response = await api.post(
+      "/change-password",
       {
         current_password: passForm.value.current_password,
         new_password: passForm.value.new_password,
         new_password_confirmation: passForm.value.new_password_confirmation
-      },
-      {
-        headers: { Authorization: `Bearer ${access_token.value}` },
       }
     );
 

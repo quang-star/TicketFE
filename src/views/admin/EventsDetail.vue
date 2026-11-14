@@ -98,7 +98,7 @@
 <script setup>
 import { reactive, ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/config/api'
 
 import Banner from '@/components/admin/eventsDetail/Banner.vue'
 import Description from '@/components/admin/eventsDetail/Description.vue'
@@ -123,13 +123,10 @@ const STATUS_PUBLISHED = 3
 const STATUS_CANCELLED = 4
 const STATUS_COMPLETED = 5
 
-/* ================= API ================= */
-const API_BASE = 'http://127.0.0.1:8000/api/admin/events'
-
 /* ================= FETCH EVENT ================= */
 onMounted(async () => {
   try {
-    const res = await axios.get(`${API_BASE}/${route.params.id}`)
+    const res = await api.get(`/admin/events/${route.params.id}`)
     const data = res.data.data
 
     data.status = Number(data.status)
@@ -151,7 +148,7 @@ const approveEvent = async () => {
   if (!confirm('Bạn chắc chắn muốn DUYỆT sự kiện này?')) return
 
   try {
-    await axios.post(`${API_BASE}/${route.params.id}/approve`)
+    await api.post(`/admin/events/${route.params.id}/approve`)
     alert('Duyệt sự kiện thành công')
 
     router.push({ name: 'AdminApproveEvents' })
@@ -165,7 +162,7 @@ const rejectEvent = async () => {
   if (!confirm('Bạn chắc chắn muốn TỪ CHỐI sự kiện này?')) return
 
   try {
-    await axios.post(`${API_BASE}/${route.params.id}/reject`)
+    await api.post(`/admin/events/${route.params.id}/reject`)
     alert('Đã từ chối sự kiện')
 
     router.push({ name: 'AdminApproveEvents' })

@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { googleTokenLogin } from 'vue3-google-login';
 
 const props = defineProps({ modelValue: Boolean });
@@ -54,7 +54,7 @@ const handleRegister = async () => {
     return;
   }
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/register", {
+    const res = await api.post("/register", {
       name: fullName.value,
       email: email.value,
       password: password.value
@@ -75,7 +75,7 @@ const handleRegister = async () => {
 const registerWithGoogle = async () => {
   try {
     const googleUser = await googleTokenLogin();
-    const res = await axios.post("http://127.0.0.1:8000/api/loginwithgoogle", {
+    const res = await api.post("/loginwithgoogle", {
       'access_token': googleUser.access_token,
     });
     if (res.data.code === 200) {
@@ -85,7 +85,7 @@ const registerWithGoogle = async () => {
       close();
       let user_info = JSON.parse(sessionStorage.getItem('user_info'))
       if (user_info.role == 3) { // 3 là admin
-        window.location.href = '/admin/index';
+        window.location.href = '/admin/dashboard';
       } else {
         window.location.reload();
       }

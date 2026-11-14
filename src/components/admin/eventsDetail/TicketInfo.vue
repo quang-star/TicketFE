@@ -79,7 +79,6 @@
 
 <script setup>
 import { reactive, ref, computed } from 'vue'
-import axios from 'axios';
 import { useCartStore } from '@/stores/cart.js'
 const cartStore = useCartStore()
 const props = defineProps({

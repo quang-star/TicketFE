@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, onMounted, computed, reactive } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 
@@ -130,15 +130,14 @@ const fetchData = async () => {
         const token = sessionStorage.getItem('access_token');
         
         // Gọi API với đầy đủ params bộ lọc
-        const res = await axios.get('http://localhost:8000/api/admin/dashboard-revenue', {
+        const res = await api.get('/admin/dashboard-revenue', {
             params: {
                 filter_type: filter.type,
                 start_date: filter.start_date,
                 end_date: filter.end_date,
                 start_month: filter.start_month,
                 end_month: filter.end_month
-            },
-            headers: { Authorization: `Bearer ${token}` }
+            }
         });
 
         if (res.data.code === 200) {

@@ -116,7 +116,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import api from "@/config/api";
 
 const router = useRouter();
 const events = ref([]);
@@ -126,7 +126,7 @@ const STATUS_PENDING_REVIEW = 2;
 
 const fetchEvents = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:8000/api/admin/events/pending");
+    const res = await api.get("/admin/events/pending");
     events.value = res.data.data;
     filteredEvents.value = events.value; // mặc định hiển thị tất cả
   } catch (err) {
@@ -139,7 +139,7 @@ const approveEvent = async (id) => {
   if (!confirmed) return;
 
   try {
-    await axios.post(`http://127.0.0.1:8000/api/admin/events/${id}/approve`);
+    await api.post(`/admin/events/${id}/approve`);
     alert("Duyệt sự kiện thành công!");
     fetchEvents();
   } catch (error) {
@@ -152,7 +152,7 @@ const rejectEvent = async (id) => {
   if (!confirmed) return;
 
   try {
-    await axios.post(`http://127.0.0.1:8000/api/admin/events/${id}/reject`);
+    await api.post(`/admin/events/${id}/reject`);
     alert("Từ chối sự kiện thành công!");
     fetchEvents();
   } catch (error) {

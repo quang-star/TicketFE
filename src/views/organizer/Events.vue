@@ -140,7 +140,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { useRouter } from "vue-router"; // 1. Import Router
 import OrganizerSidebar from "@/components/organizers/OrganizerSidebar.vue";
 import OrganizerHeader from "@/components/organizers/OrganizerHeader.vue";
@@ -213,14 +213,13 @@ const formatDate = (dateString) => {
 async function fetchEvents() {
     loading.value = true;
     try {
-        const response = await axios.get("http://localhost:8000/api/organizer/my-events", {
+        const response = await api.get("/organizer/my-events", {
             params: {
                 keyword: keyword.value,
                 status: currentStatus.value,
                 page: pagination.value.current_page,
                 limit: pagination.value.per_page
-            },
-            headers: { Authorization: `Bearer ${accessToken}` }
+            }
         });
 
         if (response.data.code === 200) {

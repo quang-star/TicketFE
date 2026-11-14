@@ -70,7 +70,7 @@ import { ref, computed } from 'vue'
 import HeaderComponent from '@/components/customers/layouts/HeaderComponent.vue'
 import NavBarComponent from '@/components/customers/layouts/NavBarComponent.vue'
 import { useCartStore } from '@/stores/cart'
-import axios from 'axios'
+import api from '@/config/api'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -102,6 +102,10 @@ function formatPrice(price) {
 
 // Đặt hàng
 async function placeOrder() {
+    if (!paymentMethod.value) {
+        alert('Vui lòng chọn phương thức thanh toán!')
+        return
+    }
 
   const user = JSON.parse(sessionStorage.getItem('user') || '{}')
 
@@ -124,13 +128,7 @@ async function placeOrder() {
 
   try {
     console.log("return path:", returnPath)
-    const res = await axios.post('http://127.0.0.1:8000/api/create-order', payload,
-
-      {
-        headers: {
-          Authorization: `Bearer ${access_token.value}`,
-        }
-      })
+    const res = await api.post('/create-order', payload)
 
     if (res.data.code === 200) {
       const checkoutUrl = res.data.data.checkout_url
@@ -143,7 +141,7 @@ async function placeOrder() {
 
       // Nếu không có checkout_url, tức là thanh toán offline
       alert('Đặt hàng thành công! Cảm ơn bạn đã mua hàng.')
-      window.location.href = '/home'
+      window.location.href = '/'
     } else {
       alert(res.data.message || 'Có lỗi xảy ra khi tạo đơn hàng')
     }

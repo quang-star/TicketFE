@@ -41,7 +41,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
+import api from '@/config/api'
 import HeaderComponent from '@/components/customers/layouts/HeaderComponent.vue';
 import NavBarComponent from '@/components/customers/layouts/NavBarComponent.vue';
 import Banner from '@/components/customers/eventDetail/Banner.vue';
@@ -91,7 +91,8 @@ async function getData() {
     const id = route.query.id
     console.log("id = ", id);
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/event/'+ id);
+        if (!id) return;
+        const res = await api.get('/event/' + id);
         console.log(res.data);
         if (res.data.code === 200) {
             // Backend đã filter & limit 4 rồi, dùng trực tiếp

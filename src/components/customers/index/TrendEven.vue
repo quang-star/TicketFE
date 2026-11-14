@@ -81,7 +81,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
+import { BASE_URL } from '@/config/const'
 import { useRouter } from 'vue-router'  
 
 const router = useRouter()
@@ -90,7 +91,7 @@ const trendIndex = ref(0)
 const trendEvents = ref([])
 
 // fallback image nếu backend không trả ảnh
-const fallbackImage = 'http://127.0.0.1:8000/images/sk1.png'
+const fallbackImage = `${BASE_URL}images/sk1.png`
 
 // số slide tối đa: mỗi slide 5 item (w-1/5)
 const trendMaxIndex = computed(() => {
@@ -115,7 +116,7 @@ const formatDate = (dateString) => {
 
 const getTrendingEvents = async () => {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/trending-events-index')
+        const res = await api.get('/trending-events-index')
         console.log('trending res', res.data)
 
         if (res.data.code === 200) {

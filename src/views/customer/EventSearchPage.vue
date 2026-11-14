@@ -63,7 +63,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from "vue"; // Thêm onUnmounted
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import api from "@/config/api";
 
 import HeaderComponent from "@/components/customers/layouts/HeaderComponent.vue";
 import DateFilter from "@/components/customers/search/DateFilter.vue";
@@ -100,7 +100,7 @@ const locationLabelMap = {
 /* ===== API CALLS ===== */
 const fetchCategories = async () => {
     try {
-        const res = await axios.get("http://127.0.0.1:8000/api/categories");
+        const res = await api.get("/categories");
         if (res.data.code === 200) categoriesList.value = res.data.data || [];
     } catch (e) { console.error(e); }
 };
@@ -128,7 +128,7 @@ const getSearchEvents = async (append = false) => {
 
     try {
         const params = buildApiParamsFromState();
-        const res = await axios.get("http://127.0.0.1:8000/api/search", { params });
+        const res = await api.get("/search", { params });
         const newEvents = res.data.code === 200 ? (res.data.data || []) : [];
 
         if (newEvents.length < PAGE_SIZE) hasMore.value = false;

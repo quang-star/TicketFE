@@ -72,13 +72,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 
 const orders = ref([]);
 const keyword = ref("");
 
 const fetchOrders = async () => {
-  const res = await axios.get("http://127.0.0.1:8000/api/admin/orders/paid");
+  const res = await api.get("/admin/orders/paid");
   orders.value = res.data.data;
 };
 

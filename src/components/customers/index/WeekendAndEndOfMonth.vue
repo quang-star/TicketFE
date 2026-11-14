@@ -133,7 +133,8 @@
 
 <script setup>
 import { reactive, ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/config/api'
+import { BASE_URL } from '@/config/const'
 import { useRouter } from 'vue-router'  
 
 const router = useRouter()
@@ -148,7 +149,7 @@ const state = reactive({
 const currentIndex = ref(0)
 
 // Fallback image nếu event không có poster_image_url
-const fallbackImage = 'http://127.0.0.1:8000/images/sk1.png'
+const fallbackImage = `${BASE_URL}images/sk1.png`
 
 // Events hiển thị theo tab
 const displayedEvents = computed(() => {
@@ -180,7 +181,7 @@ const formatPrice = (price) => {
 
 const getWeekendEvents = async () => {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/weekend-events-index')
+        const res = await api.get('/weekend-events-index')
         if (res.data.code === 200) {
             state.weekendEvents = res.data.data
         } else {
@@ -193,7 +194,7 @@ const getWeekendEvents = async () => {
 
 const getEndOfMonthEvents = async () => {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/end-of-month-events-index')
+        const res = await api.get('/end-of-month-events-index')
         if (res.data.code === 200) {
             state.endOfMonthEvents = res.data.data
         } else {

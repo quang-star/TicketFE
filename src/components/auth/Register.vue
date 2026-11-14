@@ -85,7 +85,7 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+import api from "@/config/api";
 import { useRouter, useRoute } from "vue-router";
 import { googleTokenLogin } from 'vue3-google-login';
 import HeaderComponent from '@/components/customers/layouts/HeaderComponent.vue';
@@ -105,7 +105,7 @@ const handleRegister = async () => {
         return;
     }
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/register", {
+        const res = await api.post("/register", {
             name: fullName.value,
             email: email.value,
             password: password.value
@@ -125,7 +125,7 @@ const handleRegister = async () => {
 const handleConfirm = async () => {
     if (!code.value) { alert("Vui lòng nhập mã!"); return; }
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/verifyAccount", {
+        const res = await api.post("/verifyAccount", {
             'email': email.value,
             'code': code.value,
         });
@@ -148,7 +148,7 @@ const handleConfirm = async () => {
 const registerWithGoogle = async () => {
     try {
         const googleUser = await googleTokenLogin();
-        const res = await axios.post("http://127.0.0.1:8000/api/loginwithgoogle", {
+        const res = await api.post("/loginwithgoogle", {
             'access_token': googleUser.access_token,
         });
 
@@ -160,7 +160,7 @@ const registerWithGoogle = async () => {
             
             const redirectPath = route.query.redirect;
             if (res.data.data.user_info.role == 3) {
-                window.location.href = '/admin/index';
+                window.location.href = '/admin/dashboard';
             } else {
                 router.push(redirectPath || '/');
             }
@@ -174,7 +174,7 @@ const registerWithGoogle = async () => {
 
 const resendCode = async () => {
     try {
-        const res = await axios.post("http://127.0.0.1:8000/api/resend-code", { email: email.value });
+        const res = await api.post("/resend-code", { email: email.value });
         alert(res.data.message || "Đã gửi lại mã!");
     } catch (err) {
         alert(err.response?.data?.message || err.message);

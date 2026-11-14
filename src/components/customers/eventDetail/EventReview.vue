@@ -125,7 +125,7 @@
 <script setup>
 import { ref, onMounted, computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
+import api from '@/config/api'
 import Swal from 'sweetalert2'
 
 const reviews = ref([])
@@ -153,8 +153,8 @@ const formatDate = (dateStr) => {
 const fetchReviews = async () => {
   const id = route.query.id
   try {
-    const res = await axios.get(
-      'http://127.0.0.1:8000/api/event-review',
+    const res = await api.get(
+      '/event-review',
       { params: { event_id: id } }
     )
 
@@ -211,15 +211,11 @@ const submitReport = async () => {
 
     try {
         isSubmitting.value = true;
-        const token = sessionStorage.getItem('access_token');
-        
-        await axios.post('http://127.0.0.1:8000/api/reports', {
+        await api.post('/reports', {
             type: 'review',          
             id: selectedReview.value.id, 
             reason: form.reason,
             description: form.description
-        }, {
-            headers: { Authorization: `Bearer ${token}` }
         });
 
         closeModal();

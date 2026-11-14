@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/config/api";
 
 export default {
   name: "OrganizerList",
@@ -77,7 +77,7 @@ export default {
     async fetchOrganizers() {
       this.loading = true;
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/admin/organizers", {
+        const res = await api.get("/admin/organizers", {
           params: {
             keyword: this.keyword,
           },

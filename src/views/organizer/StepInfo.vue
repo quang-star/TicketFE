@@ -199,7 +199,7 @@
 
 <script setup>
 import { reactive, watch, ref, onMounted } from "vue"
-import axios from "axios"
+import api from "@/config/api"
 import AddressSelect from "./AddressSelect.vue"
 import EventDescriptionEditor from "./EventDescriptionEditor.vue"
 
@@ -296,8 +296,8 @@ async function handleOrgLogo(e) {
 
 /* ================= API ================= */
 async function getDataOrganizer() {
-  const res = await axios.get(
-    `http://127.0.0.1:8000/api/organizer/getInfo/${state.user_info.id}`
+  const res = await api.get(
+    `/organizer/getInfo/${state.user_info.id}`
   )
   if (res.data.code === 200) {
     localData.orgName = res.data.data.organization_name
@@ -308,7 +308,7 @@ async function getDataOrganizer() {
 
 async function fetchCategories() {
   loadingCategories.value = true
-  const res = await axios.get("http://127.0.0.1:8000/api/organizer/event-categories")
+  const res = await api.get("/organizer/event-categories")
   if (res.data.code === 200) {
     categories.value = res.data.data
   }
