@@ -1,5 +1,7 @@
 <template>
-    <header class="bg-green-600 text-white">
+    <div>
+        <StudyNoticeBanner />
+        <header class="bg-green-600 text-white">
         <div class="container mx-auto flex items-center justify-between p-3">
             <div class="flex items-center space-x-2 justify-content-center">
                 <router-link to="/">
@@ -74,12 +76,14 @@
             </div>
         </div>
     </header>
+    </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useCartStore } from '@/stores/cart.js'
 import { useRouter, useRoute } from "vue-router";
+import StudyNoticeBanner from '@/components/common/StudyNoticeBanner.vue'
 
 const router = useRouter()
 const route = useRoute() // Dùng để lấy đường dẫn hiện tại

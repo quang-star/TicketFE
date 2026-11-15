@@ -65,6 +65,20 @@
                 <strong class="text-2xl text-green-600 font-bold">{{ formatPrice(totalValue) }}</strong>
               </div>
 
+              <div role="alert" class="mb-6 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900">
+                <div class="flex items-start gap-3">
+                  <span class="text-xl leading-none" aria-hidden="true">⚠️</span>
+                  <div class="text-sm leading-relaxed">
+                    <p class="font-semibold text-amber-950">
+                      Cảnh báo: Dự án phục vụ học tập &amp; nghiên cứu (Phi thương mại)
+                    </p>
+                    <p class="mt-1 text-amber-800">
+                      Hệ thống chỉ mô phỏng quy trình đặt vé phục vụ học tập và nghiên cứu, không mang tính chất thương mại. Vui lòng không thực hiện thanh toán tiền thật hoặc nhập thông tin tài chính cá nhân thật.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div class="flex flex-col sm:flex-row justify-between items-center gap-6 mt-6">
                 <router-link to="/cart" class="text-green-700 font-semibold hover:underline text-lg">
                   ← Trở về giỏ hàng
