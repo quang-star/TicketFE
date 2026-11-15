@@ -129,6 +129,9 @@
           {{ cat.name }}
         </option>
       </select>
+      <p v-if="loadingCategories" class="text-xs text-gray-400">Đang tải danh mục...</p>
+      <p v-else-if="categoriesError" class="text-xs text-red-400">{{ categoriesError }}</p>
+      <p v-else-if="categories.length === 0" class="text-xs text-gray-400">Hiện chưa có thể loại sự kiện nào.</p>
     </div>
 
     <!-- Editor -->
@@ -210,6 +213,7 @@ const emit = defineEmits(["update:modelValue"])
 /* ================= STATE ================= */
 const categories = ref([])
 const loadingCategories = ref(false)
+const categoriesError = ref("")
 
 const state = reactive({
   user_info: sessionStorage.getItem("user_info")
@@ -308,11 +312,22 @@ async function getDataOrganizer() {
 
 async function fetchCategories() {
   loadingCategories.value = true
-  const res = await api.get("/organizer/event-categories")
-  if (res.data.code === 200) {
-    categories.value = res.data.data
+  categoriesError.value = ""
+  try {
+    const res = await api.get("/organizer/event-categories")
+    if (res.data && res.data.code === 200) {
+      categories.value = Array.isArray(res.data.data) ? res.data.data : []
+    } else {
+      categories.value = []
+      categoriesError.value = "Không thể tải danh mục sự kiện."
+    }
+  } catch (err) {
+    console.error(err)
+    categories.value = []
+    categoriesError.value = "Không thể tải danh mục sự kiện."
+  } finally {
+    loadingCategories.value = false
   }
-  loadingCategories.value = false
 }
 
 /* ================= MOUNT ================= */
