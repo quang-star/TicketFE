@@ -37,6 +37,11 @@ export const useCartStore = defineStore('cart', () => {
 
     function setCheckoutItems(list) {
         checkoutItems.value = list
+        try {
+            sessionStorage.setItem('checkout_items', JSON.stringify(list || []))
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     // Hàm addToCart: Trả về TRUE nếu thành công, FALSE nếu thất bại
@@ -168,7 +173,7 @@ export const useCartStore = defineStore('cart', () => {
                     item => item.ticket_type_id === ticketId
                 )
 
-                checkoutItems.value = itemForCheckout ? [itemForCheckout] : []
+                setCheckoutItems(itemForCheckout ? [itemForCheckout] : [])
 
                 return true
             } else {
