@@ -38,20 +38,22 @@
                     <div
                         v-for="(item, index) in trendEvents"
                         :key="item.id ?? index"
-                        class="w-1/5 flex-shrink-0 px-1 relative ml-1"
+                        class="w-1/5 flex-shrink-0 px-1.5 cursor-pointer"
                         @click="goToEventDetail(item.id)"
                     >
-                        <!-- Số thứ hạng -->
-                        <span class="absolute left-2 bottom-2 text-4xl font-bold text-green-400 drop-shadow-md z-10">
-                            {{ index + 1 }}
-                        </span>
+                        <div class="relative overflow-hidden rounded-xl aspect-video bg-gray-800">
+                            <!-- Số thứ hạng -->
+                            <span class="absolute left-2 bottom-2 text-4xl font-bold text-green-400 drop-shadow-md z-10">
+                                {{ index + 1 }}
+                            </span>
 
-                        <!-- Ảnh -->
-                        <img
-                            :src="item.background_image_url || item.image || fallbackImage"
-                            class="w-full h-auto object-cover rounded-xl"
-                            alt="poster"
-                        >
+                            <!-- Ảnh -->
+                            <img
+                                :src="item.background_image_url || item.image || fallbackImage"
+                                class="w-full h-full object-cover"
+                                alt="poster"
+                            >
+                        </div>
 
                         <!-- Info -->
                         <div class="mt-2">
