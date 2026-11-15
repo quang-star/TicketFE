@@ -50,7 +50,9 @@
           {{ cat.name }}
         </button>
       </div>
-      <p v-if="categories.length === 0" class="text-xs text-zinc-500 italic mt-1">Đang tải danh mục...</p>
+      <p v-if="loading" class="text-xs text-zinc-500 italic mt-1">Đang tải danh mục...</p>
+      <p v-else-if="error" class="text-xs text-red-400 italic mt-1">{{ error }}</p>
+      <p v-else-if="categories.length === 0" class="text-xs text-zinc-500 italic mt-1">Hiện chưa có danh mục nào.</p>
     </section>
 
     <section class="mb-4 border-t border-zinc-700 pt-3">
@@ -85,7 +87,9 @@
 <script setup>
 const props = defineProps({
   modelValue: { type: Object, required: true },
-  categories: { type: Array, default: () => [] } // Nhận từ API cha truyền xuống
+  categories: { type: Array, default: () => [] }, // Nhận từ API cha truyền xuống
+  loading: { type: Boolean, default: false },
+  error: { type: String, default: '' }
 });
 
 const emit = defineEmits(["update:modelValue", "close", "reset"]);

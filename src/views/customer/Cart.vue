@@ -38,14 +38,14 @@
               <input type="checkbox" v-model="item.checked" :disabled="isExpired(item)" />
             </div>
 
-            <div class="col-span-4 flex gap-3">
+            <div class="col-span-4 flex gap-3 min-w-0">
               <img 
                 :src="item.poster_image_url || '/images/default.jpg'" 
-                class="w-20 h-20 object-cover rounded-md shadow-sm"
+                class="w-20 h-20 object-cover rounded-md shadow-sm shrink-0"
               />
-              <div class="space-y-1">
-                <p class="font-semibold text-gray-800">{{ item.ticket_type_name }}</p>
-                <p class="text-sm text-gray-500">{{ item.event_name }}</p>
+              <div class="space-y-1 min-w-0 flex-1">
+                <p class="font-semibold text-gray-800 truncate">{{ item.ticket_type_name }}</p>
+                <p class="text-sm text-gray-500 line-clamp-1">{{ item.event_name }}</p>
 
                 <p class="text-xs text-gray-600" v-if="!isExpired(item)">
                   {{ formatDateTime(item.start_datetime) }} - {{ formatDateTime(item.end_datetime) }}
@@ -55,7 +55,9 @@
                   Sự kiện đã kết thúc
                 </p>
 
-                <p class="text-xs text-gray-500">{{ item.description }}</p>
+                <p v-if="item.description" class="text-xs text-gray-500 line-clamp-2 break-words">
+                  {{ stripHtml(item.description) }}
+                </p>
               </div>
             </div>
 
@@ -270,6 +272,15 @@ const handlePaymentStatus = async () => {
 
     // Sau khi hiện thông báo xong, xoá query params trên URL để User F5 không bị hiện lại popup
     router.replace({ path: route.path });
+};
+
+const stripHtml = (html) => {
+  if (!html) return '';
+  if (typeof window !== 'undefined' && typeof DOMParser !== 'undefined') {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  return String(html).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 };
 
 // --- ON MOUNTED ---

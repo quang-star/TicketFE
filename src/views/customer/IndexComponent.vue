@@ -23,13 +23,21 @@
                     <TrendEven />
                     <WeekendAndEndOfMonth />
 
-                    <div v-if="state.categories.length > 0">
+                    <div v-if="categoriesLoading" class="text-center mt-10 text-gray-400">
+                        Đang tải danh mục sự kiện...
+                    </div>
+
+                    <div v-else-if="categoriesError" class="text-center mt-10 text-red-400">
+                        {{ categoriesError }}
+                    </div>
+
+                    <div v-else-if="state.categories.length > 0">
                         <CategorySection v-for="cat in state.categories" :key="cat.id" :categoryId="cat.id"
                             :categoryName="cat.name" />
                     </div>
 
                     <div v-else class="text-center mt-10 text-gray-400">
-                        Đang tải danh mục sự kiện...
+                        Hiện chưa có danh mục sự kiện nào.
                     </div>
 
                     <InterestingDestination />
@@ -58,6 +66,8 @@ import CategorySection from '@/components/customers/index/CategorySection.vue';
 const router = useRouter()
 const isSearching = ref(false)
 const searchResults = ref([])
+const categoriesLoading = ref(true)
+const categoriesError = ref('')
 
 const state = reactive({
     user_info: sessionStorage.getItem('user_info'),
@@ -89,16 +99,25 @@ const goToEventDetail = (id) => {
 
 // --- HÀM LẤY DANH MỤC TỪ DB ---
 const fetchCategories = async () => {
+    categoriesLoading.value = true
+    categoriesError.value = ''
     try {
         // Gọi API lấy tất cả danh mục
         // Đảm bảo Laravel có route: Route::get('/categories', ...)
         const response = await api.get('/categories');
 
         if (response.data && response.data.code === 200) {
-            state.categories = response.data.data;
+            state.categories = Array.isArray(response.data.data) ? response.data.data : [];
+        } else {
+            state.categories = [];
+            categoriesError.value = 'Không thể tải danh mục sự kiện. Vui lòng thử lại sau.';
         }
     } catch (error) {
         console.error("Lỗi lấy danh mục:", error);
+        state.categories = [];
+        categoriesError.value = 'Không thể tải danh mục sự kiện. Vui lòng thử lại sau.';
+    } finally {
+        categoriesLoading.value = false
     }
 }
 

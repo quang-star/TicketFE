@@ -5,7 +5,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <div v-for="i in events" :key="i.id" class="bg-transparent" @click="goToEventDetail(i.id)">
         <div>
-          <img :src="i.background_image_url" class="w-full h-auto object-cover rounded-xl" alt="" />
+          <img :src="i.background_image_url" class="w-full aspect-video object-cover rounded-xl bg-gray-800" alt="" />
 
           <div class="pt-2 min-h-[50px]">
             <span class="text-white text-base font-bold line-clamp-2 leading-tight">
