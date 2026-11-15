@@ -37,8 +37,8 @@
                     </div>
 
                     <div v-if="showFilter" class="absolute right-0 top-full mt-2 z-50">
-                        <FilterPanel v-model="filters" :categories="categoriesList" @close="showFilter = false"
-                            @reset="resetFilters" />
+                        <FilterPanel v-model="filters" :categories="categoriesList" :loading="categoriesLoading"
+                            :error="categoriesError" @close="showFilter = false" @reset="resetFilters" />
                     </div>
                 </div>
             </div>
@@ -79,6 +79,8 @@ const PAGE_SIZE = 12;
 /* ===== STATE ===== */
 const events = ref([]);
 const categoriesList = ref([]);
+const categoriesLoading = ref(true);
+const categoriesError = ref("");
 const showFilter = ref(false);
 const searchText = ref("");
 const isInitializing = ref(true);
@@ -99,10 +101,23 @@ const locationLabelMap = {
 
 /* ===== API CALLS ===== */
 const fetchCategories = async () => {
+    categoriesLoading.value = true;
+    categoriesError.value = "";
     try {
         const res = await api.get("/categories");
-        if (res.data.code === 200) categoriesList.value = res.data.data || [];
-    } catch (e) { console.error(e); }
+        if (res.data?.code === 200) {
+            categoriesList.value = Array.isArray(res.data.data) ? res.data.data : [];
+        } else {
+            categoriesList.value = [];
+            categoriesError.value = "Không thể tải danh mục.";
+        }
+    } catch (e) {
+        console.error(e);
+        categoriesList.value = [];
+        categoriesError.value = "Không thể tải danh mục.";
+    } finally {
+        categoriesLoading.value = false;
+    }
 };
 
 const getCategoryName = (id) => {
@@ -218,12 +233,38 @@ watch([filters, dateRange], async () => {
     await getSearchEvents(false);
 }, { deep: true });
 
-watch(() => route.query.q, async (newQ) => {
-    searchText.value = (newQ || "").toString();
-    currentPage.value = 1;
-    hasMore.value = true;
-    await getSearchEvents(false);
-});
+watch(
+    () => route.query,
+    async (newQuery) => {
+        if (isInitializing.value) return;
+        const nextQ = (newQuery.q || "").toString();
+        const nextLocal = locationLabelMap[newQuery.local] ? newQuery.local : (newQuery.local || "all");
+        const nextFrom = newQuery.from || null;
+        const nextTo = newQuery.to || null;
+        const nextFree = newQuery.price === "free";
+        const nextCats = newQuery.cate ? newQuery.cate.toString().split(",").filter(Boolean) : [];
+
+        const changed =
+            searchText.value !== nextQ ||
+            filters.value.location !== nextLocal ||
+            filters.value.freeOnly !== nextFree ||
+            dateRange.value.from !== nextFrom ||
+            dateRange.value.to !== nextTo ||
+            filters.value.categories.join(",") !== nextCats.join(",");
+
+        if (!changed) return;
+
+        isInitializing.value = true;
+        searchText.value = nextQ;
+        filters.value = { location: nextLocal, categories: nextCats, freeOnly: nextFree };
+        dateRange.value = { from: nextFrom, to: nextTo };
+        currentPage.value = 1;
+        hasMore.value = true;
+        await getSearchEvents(false);
+        isInitializing.value = false;
+    },
+    { deep: true }
+);
 
 const filteredEvents = computed(() => events.value);
 </script>

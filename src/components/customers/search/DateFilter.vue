@@ -178,6 +178,15 @@ const onInternalChange = (val) => {
   activePreset.value = ""; // bỏ preset đang chọn
 };
 
+const formatLocalYmd = (date) => {
+  if (!date) return null;
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const onApply = () => {
   if (!canApply.value) return;
 
@@ -195,8 +204,8 @@ const onApply = () => {
     emit("update:modelValue", { from: null, to: null });
   } else {
     emit("update:modelValue", {
-      from: from ? from.toISOString().slice(0, 10) : null,
-      to: to ? to.toISOString().slice(0, 10) : null,
+      from: formatLocalYmd(from),
+      to: formatLocalYmd(to),
     });
   }
 
@@ -215,7 +224,7 @@ const presets = [
 const applyPreset = (key) => {
   const today = new Date();
   const clone = (d) => new Date(d.getTime());
-  const toStr = (d) => d.toISOString().slice(0, 10);
+  const toStr = (d) => formatLocalYmd(d);
 
   activePreset.value = key;
 
